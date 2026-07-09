@@ -1,0 +1,75 @@
+/* ==========================================================================
+   Mina Flow — Color tokens
+   Brand purple sampled from the Mina wordmark (uploads/LOGO.png):
+   light violet -> deep indigo-violet gradient.
+   ========================================================================== */
+
+:root {
+  /* ---- Brand purple ramp ---- */
+  --brand-100: #F3EAFF;
+  --brand-200: #E1CDFF;
+  --brand-300: #C6A6FF;
+  --brand-400: #A65DFC; /* sampled */
+  --brand-500: #9047FA; /* sampled */
+  --brand-600: #7A2FF8; /* sampled */
+  --brand-700: #631FD1;
+  --brand-800: #4A1799;
+  --brand-900: #2E0F63;
+
+  /* Brand gradient, matches wordmark direction (light -> deep) */
+  --brand-gradient: linear-gradient(115deg, var(--brand-400) 0%, var(--brand-600) 55%, var(--brand-700) 100%);
+  --brand-gradient-soft: linear-gradient(115deg, var(--brand-300) 0%, var(--brand-500) 100%);
+
+  /* ---- Neutrals: cool, slightly violet-tinted gray scale ---- */
+  --gray-0: #FFFFFF;
+  --gray-50: #F8F7FB;
+  --gray-100: #F0EEF6;
+  --gray-200: #E3E0ED;
+  --gray-300: #CBC6DC;
+  --gray-400: #A29BBE;
+  --gray-500: #786F97;
+  --gray-600: #574F74;
+  --gray-700: #3D3759;
+  --gray-800: #261F3D;
+  --gray-900: #150C29; /* near-black, violet undertone — dark section bg */
+  --gray-950: #0D0817;
+
+  /* ---- Semantic surfaces ---- */
+  --surface-page: var(--gray-0);
+  --surface-page-alt: var(--gray-50);
+  --surface-card: var(--gray-0);
+  --surface-card-alt: var(--gray-50);
+  --surface-dark: var(--gray-900);
+  --surface-dark-alt: var(--gray-950);
+  --surface-brand: var(--brand-600);
+
+  /* ---- Semantic text ---- */
+  --text-heading: var(--gray-900);
+  --text-body: var(--gray-700);
+  --text-muted: var(--gray-500);
+  --text-on-dark: var(--gray-0);
+  --text-on-dark-muted: var(--gray-300);
+  --text-on-brand: var(--gray-0);
+  --text-link: var(--brand-600);
+  --text-link-hover: var(--brand-700);
+
+  /* ---- Semantic borders ---- */
+  --border-subtle: var(--gray-200);
+  --border-default: var(--gray-300);
+  --border-on-dark: rgba(255, 255, 255, 0.12);
+  --border-brand: var(--brand-400);
+
+  /* ---- Feedback ---- */
+  --success-500: #2FAE6B;
+  --success-100: #E3F7EC;
+  --warning-500: #E5A536;
+  --warning-100: #FCF1DC;
+  --danger-500: #E15353;
+  --danger-100: #FBE4E4;
+
+  /* ---- Focus ---- */
+  --focus-ring: 0 0 0 3px rgba(122, 47, 248, 0.35);
+}
+
+a { color: var(--text-link); }
+a:hover { color: var(--text-link-hover); }
