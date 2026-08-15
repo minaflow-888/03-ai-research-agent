@@ -2,18 +2,17 @@
 const { Badge } = window.MinaFlowDesignSystem_a5074e;
 const { Icon, Shell, SectionHead } = window;
 
-/* ---------------- Three-scenario workflow ---------------- */
 const FLOW_SCENARIOS = [
   {
     tag: 'SCENARIO 1',
     title: 'Company Analysis',
     icon: 'file-text',
     steps: [
-      'Finds a queued company in Supabase',
-      'Marks it as processing',
-      'Retrieves selected website content through HTTP',
-      'Generates a company analysis with Groq',
-      'Saves the analysis and status',
+      'Finds a queued company in Supabase — Search Rows picks up only records with status queued',
+      'Immediately marks it as processing before doing anything else — this lock prevents two scenario runs from picking up the same record at the same time',
+      'HTTP GET retrieves content from the company website — Groq cannot open a URL on its own, the HTTP module does it and passes the text forward',
+      'Groq receives the website text and a structured prompt and returns a company analysis as JSON',
+      'Upsert saves the analysis and sets status to analyzed — Scenario 2 picks up only records with this status',
     ],
   },
   {
@@ -22,11 +21,11 @@ const FLOW_SCENARIOS = [
     icon: 'badge-check',
     hot: true,
     steps: [
-      'Finds an analysis ready for review',
-      'Marks it as quality checking',
-      'Checks whether the result is sufficiently specific and useful',
-      'Routes it to approved or needs improvement',
-      'Saves approval or improvement feedback',
+      'Finds an analyzed record — Search Rows picks up only status analyzed, exactly where Scenario 1 left off',
+      'Marks it as quality_checking before evaluating — same lock mechanism as Scenario 1',
+      'A second Groq call evaluates whether the analysis is specific and useful or too generic, returning a structured JSON response',
+      'The Make.com router reads the JSON value and routes to the correct branch — Make makes the deterministic decision, not the AI',
+      'Approved: status set to approved, Scenario 3 picks it up — Needs improvement: feedback saved, the analysis does not continue',
     ],
   },
   {
@@ -34,10 +33,10 @@ const FLOW_SCENARIOS = [
     title: 'Final Master Report',
     icon: 'file-output',
     steps: [
-      'Finds an approved analysis',
-      'Marks it as report generating',
-      'Creates the final master report',
-      'Saves the final result',
+      'Finds an approved record — Search Rows picks up only status approved',
+      'Marks it as report_generating — same lock mechanism used across all three scenarios',
+      'Groq generates the final master report based on the approved analysis',
+      'Upsert saves the report and sets status to final — the pipeline is complete for that company',
     ],
   },
 ];
@@ -45,7 +44,6 @@ const FLOW_SCENARIOS = [
 function ScenarioPanel({ s, index }) {
   return (
     <div style={{ display: 'flex', gap: 28, alignItems: 'stretch' }}>
-      {/* rail column */}
       <div className="only-desktop" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 46, flexShrink: 0 }}>
         <div
           style={{
@@ -97,7 +95,7 @@ function ScenarioPanel({ s, index }) {
                 <Icon name="check" size={14} /> Approved
               </div>
               <div style={{ font: 'var(--text-body-s)', color: 'var(--text-on-dark-muted)', marginTop: 6 }}>
-                The analysis continues to the final master report.
+                Status set to approved. Scenario 3 picks it up for the final master report.
               </div>
             </div>
             <div style={{ flex: '1 1 220px', border: '1px dashed rgba(229,165,54,0.5)', borderRadius: 'var(--radius-m)', padding: '14px 18px', background: 'rgba(229,165,54,0.06)' }}>
@@ -105,7 +103,7 @@ function ScenarioPanel({ s, index }) {
                 <Icon name="rotate-ccw" size={14} /> Needs improvement
               </div>
               <div style={{ font: 'var(--text-body-s)', color: 'var(--text-on-dark-muted)', marginTop: 6 }}>
-                Feedback is saved for a later improvement pass — the analysis does not continue to the final report.
+                Feedback saved and status set to needs_improvement. The analysis does not continue to the final report.
               </div>
             </div>
           </div>
@@ -122,7 +120,7 @@ function WorkflowSection() {
       <SectionHead
         eyebrow="Three-scenario workflow"
         title="One continuous process, split into three scenarios"
-        lede="Each scenario picks up where the previous one left off, using saved workflow states in Supabase as the handoff."
+        lede="Each scenario picks up where the previous one left off, using Supabase status fields as the handoff. The lock step at the start of each scenario prevents the same record from being processed twice."
       />
       <div className="reveal-up">
         {FLOW_SCENARIOS.map((s, i) => (
@@ -134,15 +132,13 @@ function WorkflowSection() {
 }
 
 /* ---------------- Real workflow evidence ---------------- */
-// The real screenshot stacks the three scenarios vertically (682×831).
-// Crop fractions for each scenario panel:
 const EVI_TABS = [
   { id: 'full', label: 'Full workflow', y0: 0, y1: 1 },
   { id: 's1', label: 'Scenario 1', y0: 0, y1: 0.267 },
   { id: 's2', label: 'Scenario 2', y0: 0.272, y1: 0.733 },
   { id: 's3', label: 'Scenario 3', y0: 0.738, y1: 1 },
 ];
-const EVI_RATIO = 831 / 682; // image h/w
+const EVI_RATIO = 831 / 682;
 
 function EvidenceSection() {
   const [tab, setTab] = React.useState('full');
@@ -167,7 +163,6 @@ function EvidenceSection() {
     if (!zoom) return;
     const onKey = (e) => { if (e.key === 'Escape') closeZoom(); };
     window.addEventListener('keydown', onKey);
-    // Initial focus moves to the Close button when the dialog opens.
     if (closeRef.current) closeRef.current.focus();
     return () => window.removeEventListener('keydown', onKey);
   }, [zoom, closeZoom]);
@@ -181,7 +176,6 @@ function EvidenceSection() {
       />
       <div className="reveal-up">
         <div className="panel-dark raised" style={{ padding: 0, overflow: 'hidden' }}>
-          {/* frame chrome */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 20px', borderBottom: '1px solid rgba(255,255,255,0.08)', flexWrap: 'wrap' }}>
             <span style={{ display: 'flex', gap: 6 }}>
               {['#E15353', '#E5A536', '#2FAE6B'].map((c) => (
@@ -204,36 +198,22 @@ function EvidenceSection() {
               ))}
             </div>
           </div>
-          {/* cropped viewport */}
           <button
             type="button"
             ref={triggerRef}
             onClick={openZoom}
             aria-label="View the workflow screenshot larger"
             style={{
-              position: 'relative',
-              overflow: 'hidden',
-              display: 'block',
-              width: '100%',
-              aspectRatio: `1 / ${EVI_RATIO * frac}`,
-              background: '#F4F4F4',
-              cursor: 'zoom-in',
-              transition: 'aspect-ratio 400ms var(--ease-in-out)',
-              border: 'none',
-              padding: 0,
-              margin: 0,
+              position: 'relative', overflow: 'hidden', display: 'block', width: '100%',
+              aspectRatio: `1 / ${EVI_RATIO * frac}`, background: '#F4F4F4',
+              cursor: 'zoom-in', transition: 'aspect-ratio 400ms var(--ease-in-out)',
+              border: 'none', padding: 0, margin: 0,
             }}
           >
             <img
               src="assets/workflow-screenshot.png"
               alt="Three real Make.com scenarios: Company Analysis, Quality Check, and Final Master Report"
-              style={{
-                position: 'absolute',
-                width: '100%',
-                top: `-${(t.y0 / frac) * 100}%`,
-                left: 0,
-                display: 'block',
-              }}
+              style={{ position: 'absolute', width: '100%', top: `-${(t.y0 / frac) * 100}%`, left: 0, display: 'block' }}
             />
             <span
               className="evi-viewlarger"
@@ -250,8 +230,7 @@ function EvidenceSection() {
           </button>
         </div>
         <p style={{ font: 'var(--text-body-s)', color: 'var(--gray-500)', marginTop: 16, marginBottom: 0 }}>
-          Scenario 2 is the branching one: the router after the quality check sends results to
-          “Save approved result” or “Save improvement feedback”.
+          Scenario 2 is the branching one: the Make.com router reads Groq's JSON output and sends the record to "Save approved result" or "Save improvement feedback". The routing decision is deterministic — Make reads a value, it does not interpret it.
         </p>
       </div>
 
@@ -280,8 +259,7 @@ function EvidenceSection() {
                 width: 40, height: 40, borderRadius: '50%',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 background: 'var(--gray-0)', color: 'var(--gray-900)',
-                border: 'none', cursor: 'pointer',
-                boxShadow: 'var(--shadow-l)',
+                border: 'none', cursor: 'pointer', boxShadow: 'var(--shadow-l)',
               }}
             >
               <Icon name="x" size={18} />
