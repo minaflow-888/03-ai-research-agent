@@ -11,10 +11,9 @@ function QualitySection() {
         center
         eyebrow="Why quality control matters"
         title="Generating text is not the same as checking it."
-        lede="A separate scenario evaluates every analysis before anything moves forward."
+        lede="A separate scenario evaluates every analysis before anything moves forward. The quality check uses a second Groq call with a different prompt — one focused on evaluation, not generation."
       />
 
-      {/* process line */}
       <div className="reveal-up" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, flexWrap: 'wrap', marginBottom: 56 }}>
         {['Generated analysis', 'Quality evaluation', 'Approved or Needs improvement'].map((step, i) => (
           <React.Fragment key={step}>
@@ -32,12 +31,11 @@ function QualitySection() {
         ))}
       </div>
 
-      {/* comparison */}
       <div className="reveal-up" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 24, maxWidth: 940, margin: '0 auto' }}>
         <div style={{ background: 'var(--gray-0)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-l)', padding: '30px 32px', boxShadow: 'var(--shadow-s)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
             <Icon name="x-circle" size={18} color="var(--danger-500)" />
-            <span style={{ font: 'var(--text-label)', letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase', color: 'var(--danger-500)' }}>Too generic</span>
+            <span style={{ font: 'var(--text-label)', letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase', color: 'var(--danger-500)' }}>Too generic — does not continue</span>
           </div>
           <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 12 }}>
             {QC_CONTENT.TOO_GENERIC.map((t) => (
@@ -56,7 +54,7 @@ function QualitySection() {
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
             <Icon name="check-circle-2" size={18} color="var(--success-500)" />
-            <span style={{ font: 'var(--text-label)', letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase', color: 'var(--success-500)' }}>Ready to approve</span>
+            <span style={{ font: 'var(--text-label)', letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase', color: 'var(--success-500)' }}>Ready to approve — continues</span>
           </div>
           <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 12 }}>
             {QC_CONTENT.READY_TO_APPROVE.map((t) => (
@@ -70,8 +68,7 @@ function QualitySection() {
       </div>
 
       <p className="reveal-up" style={{ font: 'var(--text-body-s)', color: 'var(--text-muted)', textAlign: 'center', maxWidth: 640, margin: '36px auto 0', textWrap: 'pretty' }}>
-        This check reduces weak output. It does not guarantee perfect factual accuracy — important
-        results should still be reviewed by a person.
+        This check reduces weak output. It does not guarantee factual accuracy — the AI evaluates structure and specificity, not whether the information is correct. Important results should still be reviewed by a person before use.
       </p>
     </Shell>
   );
@@ -79,12 +76,12 @@ function QualitySection() {
 
 /* ---------------- Core capabilities ---------------- */
 const CAPABILITIES = [
-  { icon: 'globe', label: 'Website content retrieval' },
+  { icon: 'globe', label: 'Website content retrieval via HTTP' },
   { icon: 'file-text', label: 'Company analysis generation' },
-  { icon: 'badge-check', label: 'Separate quality check' },
+  { icon: 'badge-check', label: 'Separate quality check scenario' },
   { icon: 'split', label: 'Approved / needs-improvement routing' },
   { icon: 'file-output', label: 'Final master report creation' },
-  { icon: 'database', label: 'Saved workflow states' },
+  { icon: 'database', label: 'Supabase workflow state management' },
 ];
 
 function CapabilitiesSection() {
@@ -95,7 +92,7 @@ function CapabilitiesSection() {
         title="What the system actually does"
       />
       <div className="reveal-up" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 16 }}>
-        {CAPABILITIES.map((c, i) => (
+        {CAPABILITIES.map((c) => (
           <div key={c.label} className="panel-dark" style={{ padding: '22px 24px', display: 'flex', gap: 16, alignItems: 'center' }}>
             <Icon name={c.icon} size={20} color="var(--brand-400)" />
             <span style={{ font: 'var(--text-body-m)', fontWeight: 600, color: 'var(--text-on-dark)' }}>{c.label}</span>
@@ -137,4 +134,49 @@ function StackSection() {
   );
 }
 
-Object.assign(window, { QualitySection, CapabilitiesSection, StackSection });
+/* ---------------- Limitations ---------------- */
+const LIMITATIONS_LIST = [
+  'AI output can still contain weak or incorrect conclusions even after the quality check.',
+  'Website content may be incomplete, require JavaScript to load or block automated retrieval.',
+  'The quality check reduces generic output but does not replace human review before the report is used.',
+  'The record-locking mechanism prevents most duplicate runs but is not a guaranteed safeguard in every edge case.',
+  'Production use would require stronger error handling, retry logic, source tracking and monitoring.',
+  'This is a portfolio demonstration tested with demonstration data, not a production deployment.',
+];
+
+function LimitationsSection() {
+  return (
+    <Shell tone="light" pad="lg" id="limitations">
+      <SectionHead
+        dark={false}
+        eyebrow="Honest by design"
+        title="What still needs improvement"
+      />
+      <div className="reveal-up" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 0, borderTop: '1px solid var(--border-subtle)' }}>
+        <div>
+          <div style={{ font: 'var(--text-label)', letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase', color: 'var(--warning-500)', display: 'flex', alignItems: 'center', gap: 8, padding: '24px 0 16px' }}>
+            <Icon name="alert-triangle" size={15} /> Current limitations
+          </div>
+          {LIMITATIONS_LIST.map((item) => (
+            <div key={item} style={{ padding: '14px 0', borderBottom: '1px solid var(--border-subtle)', font: 'var(--text-body-m)', color: 'var(--text-body)', textWrap: 'pretty' }}>
+              {item}
+            </div>
+          ))}
+        </div>
+        <div style={{ paddingLeft: 40 }}>
+          <div style={{ font: 'var(--text-label)', letterSpacing: 'var(--tracking-wide)', textTransform: 'uppercase', color: 'var(--brand-500)', display: 'flex', alignItems: 'center', gap: 8, padding: '24px 0 16px' }}>
+            <Icon name="arrow-up-right" size={15} /> Possible next steps
+          </div>
+          {QC_CONTENT.NEXT_IMPROVEMENTS.map((item, i) => (
+            <div key={item} style={{ padding: '14px 0', borderBottom: '1px solid var(--border-subtle)', display: 'flex', gap: 16, font: 'var(--text-body-m)', color: 'var(--text-body)' }}>
+              <span style={{ font: 'var(--text-mono-s)', color: 'var(--brand-400)', flexShrink: 0 }}>0{i + 1}</span>
+              <span style={{ textWrap: 'pretty' }}>{item}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </Shell>
+  );
+}
+
+Object.assign(window, { QualitySection, CapabilitiesSection, StackSection, LimitationsSection });
