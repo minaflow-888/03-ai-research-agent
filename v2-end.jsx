@@ -92,10 +92,12 @@ function StatesSection() {
 
 /* ---------------- Limitations & next steps ---------------- */
 const LIMITS = [
-  'AI output can still contain weak or incorrect conclusions.',
-  'Website content may be incomplete or difficult to retrieve.',
-  'Quality control reduces weak output but does not replace human review.',
-  'Production use would require stronger monitoring, security and error handling.',
+ 'AI output can still contain weak or incorrect conclusions even after the quality check.',
+  'Website content may be incomplete, require JavaScript to load or block automated retrieval.',
+  'The quality check reduces generic output but does not replace human review before the report is used.',
+  'The record-locking mechanism prevents most duplicate runs but is not a guaranteed safeguard in every edge case.',
+  'Production use would require stronger error handling, retry logic, source tracking and monitoring.',
+  'This is a portfolio demonstration tested with demonstration data, not a production deployment.',
 ];
 
 function LimitationsSection() {
