@@ -26,30 +26,47 @@ function useApp() {
 Object.assign(window, { useApp });
 
 const HERO_SV_LAYOUT_FIX = `
-  /* Swedish labels are longer, so give the four hero cards a cleaner zig-zag layout. */
+  /* Swedish copy needs a slightly tighter heading so it stays inside the left column. */
+  html[lang="sv"] [data-screen-label="Hero"] h1 {
+    font-size: clamp(3.15rem, 4vw, 4.1rem) !important;
+    line-height: 1.03 !important;
+    letter-spacing: -0.045em !important;
+    max-width: 96% !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+  }
+
+  /* Keep the four workflow cards clearly separated on Swedish desktop copy. */
   html[lang="sv"] .hero-pipeline-card:nth-of-type(1) {
-    left: 0% !important;
+    left: 2% !important;
     top: 1% !important;
-    width: 50% !important;
+    width: 48% !important;
   }
   html[lang="sv"] .hero-pipeline-card:nth-of-type(2) {
-    left: 50% !important;
+    left: 52% !important;
     top: 27% !important;
-    width: 50% !important;
+    width: 46% !important;
   }
   html[lang="sv"] .hero-pipeline-card:nth-of-type(3) {
-    left: 0% !important;
+    left: 2% !important;
     top: 53% !important;
-    width: 56% !important;
+    width: 52% !important;
   }
   html[lang="sv"] .hero-pipeline-card:nth-of-type(4) {
-    left: 50% !important;
+    left: 52% !important;
     top: 80% !important;
-    width: 50% !important;
+    width: 46% !important;
   }
 
   html[lang="sv"] .hero-pipeline-card {
     transform-origin: center center;
+  }
+
+  @media (max-width: 760px) {
+    html[lang="sv"] [data-screen-label="Hero"] h1 {
+      font-size: clamp(2.7rem, 12vw, 4rem) !important;
+      max-width: 100% !important;
+    }
   }
 `;
 
