@@ -25,6 +25,34 @@ function useApp() {
 
 Object.assign(window, { useApp });
 
+const HERO_SV_LAYOUT_FIX = `
+  /* Swedish labels are longer, so give the four hero cards a cleaner zig-zag layout. */
+  html[lang="sv"] .hero-pipeline-card:nth-of-type(1) {
+    left: 0% !important;
+    top: 1% !important;
+    width: 50% !important;
+  }
+  html[lang="sv"] .hero-pipeline-card:nth-of-type(2) {
+    left: 50% !important;
+    top: 27% !important;
+    width: 50% !important;
+  }
+  html[lang="sv"] .hero-pipeline-card:nth-of-type(3) {
+    left: 0% !important;
+    top: 53% !important;
+    width: 56% !important;
+  }
+  html[lang="sv"] .hero-pipeline-card:nth-of-type(4) {
+    left: 50% !important;
+    top: 80% !important;
+    width: 50% !important;
+  }
+
+  html[lang="sv"] .hero-pipeline-card {
+    transform-origin: center center;
+  }
+`;
+
 function PageContent() {
   const { lang } = useApp();
 
@@ -76,6 +104,7 @@ function PageContent() {
 
   return (
     <div>
+      <style>{HERO_SV_LAYOUT_FIX}</style>
       <window.NavBar />
       <main>
         <div data-screen-label="Hero"><window.Hero /></div>
