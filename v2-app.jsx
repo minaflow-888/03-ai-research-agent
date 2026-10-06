@@ -109,11 +109,14 @@ const RESPONSIVE_FIXES = `
 
     [data-screen-label="Hero"] h1,
     html[lang="sv"] [data-screen-label="Hero"] h1 {
-      font-size: clamp(2.55rem, 13vw, 3.8rem) !important;
-      line-height: 0.98 !important;
+      font-size: clamp(2.2rem, 11.2vw, 3.2rem) !important;
+      line-height: 1.0 !important;
       letter-spacing: -0.04em !important;
       max-width: 100% !important;
-      overflow-wrap: normal !important;
+      width: 100% !important;
+      overflow-wrap: anywhere !important;
+      word-break: break-word !important;
+      hyphens: auto !important;
     }
 
     /* Hero becomes text first, then a readable vertical pipeline. */
