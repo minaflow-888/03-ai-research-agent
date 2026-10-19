@@ -1,7 +1,7 @@
 // Shared primitives for the redesigned AI Research Agent case study.
 const DS = window.MinaFlowDesignSystem_a5074e;
 
-const V2_PORTFOLIO_URL = 'https://portfolio-site-9d14e9.webflow.io/';
+const V2_PORTFOLIO_URL = 'https://portfolio-site-9d14e9-34d94a51044ee8e3a.webflow.io/';
 const V2_LEAD_CAPTURE_URL = 'https://minaflow-888.github.io/01-lead-capture-automation-case-study/';
 
 function Icon({ name, size = 18, color, style, className }) {
