@@ -42,12 +42,13 @@ const FLOW_COPY = {
     evidenceNote: 'Scenario 2 is the branching step: Make.com reads Groq’s JSON output and routes the record to approved or needs improvement. Make controls the next step; the AI only provides the structured result.',
     resourcesEyebrow: 'Project resources',
     resourcesTitle: 'Plan, documentation and demo',
-    resourcesLede: 'Explore the hand-drawn workflow sketch, the project documentation and the planned video walkthrough.',
+    resourcesLede: 'Explore the hand-drawn workflow sketch, the project documentation and the video walkthrough.',
     sketchTitle: 'Workflow planning sketch',
     sketchText: 'A hand-drawn overview of how company research, quality review and final report generation are connected.',
     sketchAlt: 'Hand-drawn AI Research Agent workflow sketch in English',
-    demoTitle: 'Demo coming soon',
-    demoText: 'A walkthrough video will be added later to show how all three Make.com scenarios work together in practice.',
+    demoTitle: 'Video walkthrough',
+    demoText: 'A short walkthrough of how the three Make.com scenarios work together. The narration is in Swedish.',
+    demoIframeTitle: 'AI Research Agent video walkthrough (Swedish narration)',
     docsTitle: 'Project documentation',
     docsText: 'The documentation explains the workflow logic, AI quality check, report generation, data handling, limitations and planned improvements.',
     enDoc: 'Documentation — EN',
@@ -92,12 +93,13 @@ const FLOW_COPY = {
     evidenceNote: 'Scenario 2 är förgreningen: Make.com läser Groqs JSON-resultat och skickar posten till godkänd eller behöver förbättras. Make styr nästa steg; AI:n levererar bara det strukturerade resultatet.',
     resourcesEyebrow: 'Projektmaterial',
     resourcesTitle: 'Plan, dokumentation och demo',
-    resourcesLede: 'Här finns den handritade skissen, projektdokumentationen och platsen för en kommande videogenomgång.',
+    resourcesLede: 'Här finns den handritade skissen, projektdokumentationen och videogenomgången.',
     sketchTitle: 'Planeringsskiss',
     sketchText: 'En handritad översikt som visar hur företagsresearch, kvalitetskontroll och slutrapport hänger ihop.',
     sketchAlt: 'Handritad skiss av AI Research Agent-flödet på svenska',
-    demoTitle: 'Demo kommer snart',
-    demoText: 'En videogenomgång läggs till senare för att visa hur de tre Make.com-scenarierna fungerar tillsammans i praktiken.',
+    demoTitle: 'Videogenomgång',
+    demoText: 'En kort genomgång av hur de tre Make.com-scenarierna fungerar tillsammans. Berättarrösten är på svenska.',
+    demoIframeTitle: 'Videogenomgång av AI Research Agent (svensk berättarröst)',
     docsTitle: 'Projektdokumentation',
     docsText: 'Dokumentationen beskriver arbetsflödets logik, AI-kvalitetskontroll, rapportgenerering, datahantering, begränsningar och planerade förbättringar.',
     enDoc: 'Dokumentation — EN',
@@ -162,7 +164,7 @@ function ResourcesSection() {
   return <Shell tone="navy" grid pad="lg" id="resources"><SectionHead eyebrow={copy.resourcesEyebrow} title={copy.resourcesTitle} lede={copy.resourcesLede} />
     <div className="reveal-up" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,360px),1fr))', gap: 24, alignItems: 'stretch' }}>
       <article className="panel-dark" style={card}><div style={{ aspectRatio: '16/9', overflow: 'hidden', background: '#f7f3ea' }}><img src={sketch} alt={copy.sketchAlt} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} /></div><div style={{ padding: 22, flex: 1 }}><h3 style={{ margin: '0 0 8px' }}>{copy.sketchTitle}</h3><p style={{ margin: 0, opacity: .82 }}>{copy.sketchText}</p></div></article>
-      <article className="panel-dark" style={card}><div style={{ aspectRatio: '16/9', background: 'linear-gradient(135deg,#120c08,#19110c 55%,#3a1e0d)', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: 24 }}><div><span style={{ width: 72, height: 72, borderRadius: 999, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(249,115,22,.25)', border: '1px solid rgba(255,255,255,.18)', marginBottom: 12 }}><Icon name="video" size={30} /></span><strong style={{ display: 'block', color: '#fff', fontSize: '1.05rem' }}>{copy.demoTitle}</strong><span style={{ opacity: .65 }}>AI Research Agent · Loom</span></div></div><div style={{ padding: 22, flex: 1 }}><h3 style={{ margin: '0 0 8px' }}>{copy.demoTitle}</h3><p style={{ margin: 0, opacity: .82 }}>{copy.demoText}</p></div></article>
+      <article className="panel-dark" style={card}><div style={{ position: 'relative', aspectRatio: '16/9', background: '#000' }}><iframe src="https://www.youtube.com/embed/U0lRxVfM4ZQ?rel=0" title={copy.demoIframeTitle} loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen referrerPolicy="strict-origin-when-cross-origin" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 0 }} /></div><div style={{ padding: 22, flex: 1 }}><h3 style={{ margin: '0 0 8px' }}>{copy.demoTitle}</h3><p style={{ margin: 0, opacity: .82 }}>{copy.demoText}</p></div></article>
     </div>
     <article className="panel-dark reveal-up" style={{ ...card, marginTop: 24, height: 'auto', padding: 22 }}><h3 style={{ margin: '0 0 8px' }}>{copy.docsTitle}</h3><p style={{ margin: '0 0 16px', opacity: .82 }}>{copy.docsText}</p><div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}><a href="assets/AI_Research_Agent_Documentation_EN.pdf" target="_blank" rel="noopener noreferrer" style={btn}><Icon name="file-text" size={16} /> {copy.enDoc}</a><a href="assets/AI_Research_Agent_Documentation_SV.pdf" target="_blank" rel="noopener noreferrer" style={btn}><Icon name="file-text" size={16} /> {copy.svDoc}</a></div></article>
   </Shell>;
