@@ -52,8 +52,8 @@ const SCENARIOS = [
     tag: 'Scenario 3',
     title: 'Final Master Report',
     description:
-      'Finds an approved record and locks it as report_generating. Groq generates the final structured master report from the approved analysis. The report and final status are saved to Supabase. The pipeline is complete for that company.',
-    flow: ['Approved analysis', 'Locked as report_generating', 'Groq master report', 'Saved as final'],
+      'Finds an approved record and locks it as report_generating. Groq generates the final structured master report from the approved analysis. The report is saved to Supabase and the status becomes completed. The pipeline is complete for that company.',
+    flow: ['Approved analysis', 'Locked as report_generating', 'Groq master report', 'Saved as completed'],
     highlight: false,
   },
 ];
@@ -87,7 +87,7 @@ const WORKFLOW_STATES = [
   'approved',
   'needs_improvement',
   'report_generating',
-  'final',
+  'completed',
 ];
 
 const WORKFLOW_STATE_DESCRIPTIONS = {
@@ -98,7 +98,7 @@ const WORKFLOW_STATE_DESCRIPTIONS = {
   approved: 'Quality check passed. Ready for Scenario 3.',
   needs_improvement: 'Analysis was too generic. Feedback saved. Does not continue.',
   report_generating: 'Scenario 3 has locked the record and is generating the master report.',
-  final: 'Master report saved. Pipeline complete for this company.',
+  completed: 'Master report saved. Pipeline complete for this company.',
 };
 
 const LIMITATIONS = [

@@ -31,7 +31,7 @@ const FLOW_COPY = {
         'Finds an approved record.',
         'Marks it as report_generating.',
         'Groq creates the final structured report from the approved analysis.',
-        'The report is saved to Supabase and the status becomes final.'
+        'The report is saved to Supabase and the status becomes completed.'
       ]}
     ],
     evidenceEyebrow: 'Real workflow evidence',
@@ -82,7 +82,7 @@ const FLOW_COPY = {
         'Hittar en godkänd post.',
         'Markerar den som report_generating.',
         'Groq skapar den slutliga strukturerade rapporten från den godkända analysen.',
-        'Rapporten sparas i Supabase och status ändras till final.'
+        'Rapporten sparas i Supabase och status ändras till completed.'
       ]}
     ],
     evidenceEyebrow: 'Bevis från det riktiga arbetsflödet',
